@@ -31,7 +31,7 @@ Version
 
 v0.0.1
 
-This library uses [Semantic Versioning 2.0.0][semver]
+This library uses [Semantic Versioning 2.0.0][semver].
 
 This library is currently not suitable for production purposes.
 
