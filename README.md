@@ -12,6 +12,14 @@ The recommended way to install the library is add a `require` entry in your proj
         "peehaa/phpoauthprovider": "0.0.*"
     }
 
+Optionally you could manually clone the repository:
+
+    git clone https://github.com/PeeHaa/PHPoAuthProvider.git
+
+Or manually download a release.
+
+When cloning or manully downloading a release the library's bootstrap should be included in the project to enable autoloading of the library or the library should be included in another (existing) autoloader stack. The library is compliant with PSR-0.
+
 Features
 -
 
