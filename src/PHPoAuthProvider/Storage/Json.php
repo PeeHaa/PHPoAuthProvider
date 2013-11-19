@@ -40,11 +40,13 @@ class Json implements Medium
      */
     public function __construct($dataDirectory)
     {
+        $dataDirectory = $this->normalizeDataDirectory($dataDirectory);
+
         if (!is_dir($dataDirectory)) {
             throw new InvalidStorageException('Invalid data directory (`' . $dataDirectory . '`) supplied.');
         }
 
-        $this->dataDirectory = $this->normalizeDataDirectory($dataDirectory);
+        $this->dataDirectory = $dataDirectory;
     }
 
     /**
