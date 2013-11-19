@@ -28,8 +28,8 @@ Features
 - PSR-0 compliant for easy interoperability
 - Secure default settings
 - Unit tested
-- Support for oAuth 1a ([rfc6749][rfc6749])
-- Support for oAuth 2.0 ([spec][oauth1a-spec])
+- Support for oAuth 1a ([rfc5849][rfc5849])
+- Support for oAuth 2.0 ([rfc6749][rfc6749])
 
 Implementations
 -
@@ -51,6 +51,6 @@ Client
 For an oAuth client instead of a provider see the [PHPoAuthLib project][phpoauthlib]
 
 [phpoauthlib]: https://github.com/Lusitanian/PHPoAuthLib
+[rfc5849]: http://tools.ietf.org/html/rfc5849
 [rfc6749]: http://tools.ietf.org/html/rfc6749
-[oauth1a-spec]: http://oauth.net/core/1.0a/
 [semver]: http://semver.org/
