@@ -50,6 +50,7 @@ class ExpiringTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PHPoAuthProvider\Token\Expiring::__construct
      * @covers PHPoAuthProvider\Token\Expiring::isValid
+     * @covers PHPoAuthProvider\Token\Expiring::isExpired
      */
     public function testIsValidTrue()
     {
@@ -60,7 +61,25 @@ class ExpiringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPoAuthProvider\Token\Expiring::__construct
+     * @covers PHPoAuthProvider\Token\Expiring::setLifetime
      * @covers PHPoAuthProvider\Token\Expiring::isValid
+     * @covers PHPoAuthProvider\Token\Expiring::isExpired
+     */
+    public function testIsValidTrueWithExpandedLifetime()
+    {
+        $created = new \DateTime('now');
+        $created->sub(new \DateInterval('PT1H'));
+
+        $token = new Expiring('foo', $created);
+        $token->setLifetime(3660); // 1 hour and 1 minute
+
+        $this->assertTrue($token->isValid('foo'));
+    }
+
+    /**
+     * @covers PHPoAuthProvider\Token\Expiring::__construct
+     * @covers PHPoAuthProvider\Token\Expiring::isValid
+     * @covers PHPoAuthProvider\Token\Expiring::isExpired
      */
     public function testIsValidFalseWhenTokenDoesntMatch()
     {
@@ -72,6 +91,7 @@ class ExpiringTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PHPoAuthProvider\Token\Expiring::__construct
      * @covers PHPoAuthProvider\Token\Expiring::isValid
+     * @covers PHPoAuthProvider\Token\Expiring::isExpired
      */
     public function testIsValidFalseWhenExpired()
     {
@@ -83,6 +103,7 @@ class ExpiringTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PHPoAuthProvider\Token\Expiring::__construct
      * @covers PHPoAuthProvider\Token\Expiring::isValid
+     * @covers PHPoAuthProvider\Token\Expiring::isExpired
      */
     public function testIsValidFalseWhenTokenDoesntMatchAndIsExpired()
     {
