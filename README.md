@@ -28,6 +28,7 @@ Features
 - PSR-0 compliant for easy interoperability
 - Secure default settings
 - Unit tested
+- Optional rate limiting (a.k.a. throttling)
 - Support for oAuth 1a ([rfc5849][rfc5849])
 - Support for oAuth 2.0 ([rfc6749][rfc6749])
 
