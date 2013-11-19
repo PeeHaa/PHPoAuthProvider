@@ -26,6 +26,7 @@
             <directory suffix=".php">src/</directory>
             <exclude>
                 <file>src/PHPoAuthProvider/bootstrap.php</file>
+                <file>src/PHPoAuthProvider/Network/InvalidCallbackUriException.php</file>
                 <file>src/PHPoAuthProvider/Storage/InvalidStorageException.php</file>
                 <file>src/PHPoAuthProvider/Storage/InvalidTypeException.php</file>
             </exclude>
