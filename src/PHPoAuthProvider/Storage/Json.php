@@ -100,7 +100,7 @@ class Json implements Medium
 
         $this->createStorageIfNotExists($storageLocation);
 
-        return json_decode($storageLocation, true);
+        return json_decode(file_get_contents($storageLocation), true);
     }
 
     /**
