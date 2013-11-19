@@ -37,6 +37,11 @@ class Request implements RequestData
     private $postVariables;
 
     /**
+     * @var string The raw post data
+     */
+    private $rawPostData;
+
+    /**
      * @var \PHPoAuthProvider\Storage\ImmutableKeyValue The SERVER variables
      */
     private $serverVariables;
@@ -54,19 +59,24 @@ class Request implements RequestData
     /**
      * Creates instance
      *
+     * @todo We probably want some nice interface to access to raw post data. For now it's good enough ™
+     *
      * @param \PHPoAuthProvider\Storage\ImmutableKeyValue $getVariables    The GET variables
      * @param \PHPoAuthProvider\Storage\ImmutableKeyValue $postVariables   The POST variables
+     * @param string                                      $rawPostData     The raw POST data
      * @param \PHPoAuthProvider\Storage\ImmutableKeyValue $serverVariables The SERVER variables
      * @param \PHPoAuthProvider\Storage\ImmutableKeyValue $filesVariables  The FILES variables
      */
     public function __construct(
         ImmutableKeyValue $getVariables,
         ImmutableKeyValue $postVariables,
+        $rawPostData,
         ImmutableKeyValue $serverVariables,
         ImmutableKeyValue $filesVariables
     ) {
         $this->getVariables    = $getVariables;
         $this->postVariables   = $postVariables;
+        $this->rawPostData     = $rawPostData;
         $this->serverVariables = $serverVariables;
         $this->filesVariables  = $filesVariables;
     }
@@ -95,6 +105,16 @@ class Request implements RequestData
     public function post($key, $defaultValue = null)
     {
         return $this->postVariables->get($key, $defaultValue);
+    }
+
+    /**
+     * Gets the raw post data
+     *
+     * @return string The raw post data
+     */
+    public function rawPost()
+    {
+        return $this->rawPostData;
     }
 
     /**

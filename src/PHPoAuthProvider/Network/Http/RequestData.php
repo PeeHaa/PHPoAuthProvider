@@ -45,6 +45,13 @@ interface RequestData
     public function post($key, $defaultValue = null);
 
     /**
+     * Gets the raw post data
+     *
+     * @return string The raw post data
+     */
+    public function rawPost();
+
+    /**
      * Gets a value from the SERVER variables
      *
      * @param string $key          The key of the value to get

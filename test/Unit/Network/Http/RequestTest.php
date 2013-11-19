@@ -12,7 +12,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testConstructCorrectInterface()
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertInstanceOf('\\PHPoAuthProvider\\Network\\Http\\RequestData', $request);
     }
@@ -23,7 +23,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testConstructCorrectInstance()
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertInstanceOf('\\PHPoAuthProvider\\Network\\Http\\Request', $request);
     }
@@ -39,7 +39,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $getVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $getVariables->expects($this->any())->method('get')->will($this->returnValue('bar'));
 
-        $request = new Request($getVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($getVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertSame('bar', $request->get('foo'));
     }
@@ -52,7 +52,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertNull($request->get('foo'));
     }
@@ -68,7 +68,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $getVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $getVariables->expects($this->any())->method('get')->will($this->returnArgument(1));
 
-        $request = new Request($getVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($getVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertSame('bar', $request->get('foo', 'bar'));
     }
@@ -84,7 +84,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $postVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $postVariables->expects($this->any())->method('get')->will($this->returnValue('bar'));
 
-        $request = new Request($requestVariables, $postVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $postVariables, '', $requestVariables, $requestVariables);
 
         $this->assertSame('bar', $request->post('foo'));
     }
@@ -97,7 +97,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertNull($request->post('foo'));
     }
@@ -113,9 +113,25 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $postVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $postVariables->expects($this->any())->method('get')->will($this->returnArgument(1));
 
-        $request = new Request($requestVariables, $postVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $postVariables, '', $requestVariables, $requestVariables);
 
         $this->assertSame('bar', $request->post('foo', 'bar'));
+    }
+
+    /**
+     * @covers PHPoAuthProvider\Network\Http\Request::__construct
+     * @covers PHPoAuthProvider\Network\Http\Request::rawPost
+     */
+    public function testRawPost()
+    {
+        $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
+
+        $postVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
+        $postVariables->expects($this->any())->method('get')->will($this->returnArgument(1));
+
+        $request = new Request($requestVariables, $postVariables, 'foo', $requestVariables, $requestVariables);
+
+        $this->assertSame('foo', $request->rawPost());
     }
 
     /**
@@ -129,7 +145,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('bar'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('bar', $request->server('foo'));
     }
@@ -142,7 +158,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertNull($request->server('foo'));
     }
@@ -158,7 +174,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnArgument(1));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('bar', $request->server('foo', 'bar'));
     }
@@ -174,7 +190,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $filesVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $filesVariables->expects($this->any())->method('get')->will($this->returnValue('bar'));
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $filesVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $filesVariables);
 
         $this->assertSame('bar', $request->files('foo'));
     }
@@ -187,7 +203,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertNull($request->files('foo'));
     }
@@ -203,7 +219,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $filesVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $filesVariables->expects($this->any())->method('get')->will($this->returnArgument(1));
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $filesVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $filesVariables);
 
         $this->assertSame('bar', $request->files('foo', 'bar'));
     }
@@ -216,7 +232,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertNull($request->setParameters([1, 2, 3, 4, 5]));
     }
@@ -230,7 +246,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $request->setParameters(['foo', 'bar', 'baz']);
 
@@ -247,7 +263,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertNull($request->param(0));
     }
@@ -260,7 +276,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $requestVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
 
-        $request = new Request($requestVariables, $requestVariables, $requestVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $requestVariables, $requestVariables);
 
         $this->assertSame('bar', $request->param('0', 'bar'));
     }
@@ -276,7 +292,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('/foo/bar'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('/foo/bar', $request->getPath());
     }
@@ -292,7 +308,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('/foo/bar?foo=bar'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('/foo/bar', $request->getPath());
     }
@@ -307,7 +323,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('POST'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('POST', $request->getMethod());
     }
@@ -323,7 +339,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('XMLHttpRequest'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertTrue($request->isXhr());
     }
@@ -339,7 +355,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('XMLHttpRequestFalse'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertFalse($request->isXhr());
     }
@@ -355,7 +371,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('Non empty value'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertTrue($request->isSecure());
     }
@@ -371,7 +387,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('on'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertTrue($request->isSecure());
     }
@@ -387,7 +403,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue(''));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertFalse($request->isSecure());
     }
@@ -403,7 +419,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue(null));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertFalse($request->isSecure());
     }
@@ -419,7 +435,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables = $this->getMock('\\PHPoAuthProvider\\Storage\\ImmutableKeyValue');
         $serverVariables->expects($this->any())->method('get')->will($this->returnValue('off'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertFalse($request->isSecure());
     }
@@ -437,7 +453,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables->expects($this->at(0))->method('get')->will($this->returnValue('on'));
         $serverVariables->expects($this->at(1))->method('get')->will($this->returnValue('pieterhordijk.com'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('https://pieterhordijk.com', $request->getBaseUrl());
     }
@@ -455,7 +471,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $serverVariables->expects($this->at(0))->method('get')->will($this->returnValue('off'));
         $serverVariables->expects($this->at(1))->method('get')->will($this->returnValue('pieterhordijk.com'));
 
-        $request = new Request($requestVariables, $requestVariables, $serverVariables, $requestVariables);
+        $request = new Request($requestVariables, $requestVariables, '', $serverVariables, $requestVariables);
 
         $this->assertSame('http://pieterhordijk.com', $request->getBaseUrl());
     }
